@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Portfolio App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 10px;
+            cursor: pointer;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2 id="formTitle">Register</h2>
+
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+
+    <button onclick="handleSubmit()">Submit</button>
+
+    <div class="message" id="message"></div>
+
+    <div class="link" onclick="toggleForm()">
+        Already have an account? Login
+    </div>
+
+</div>
+
+<script>
+    let isRegister = true;
+
+    function toggleForm() {
+        isRegister = !isRegister;
+        document.getElementById("formTitle").innerText = isRegister ? "Register" : "Login";
+        document.querySelector(".link").innerText = 
+            isRegister ? "Already have an account? Login" : "Don't have an account? Register";
+    }
+
+    async function handleSubmit() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        const url = isRegister ? "/register" : "/login";
+
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+            if (data.message === "Login successful") {
+        localStorage.setItem("userEmail", email);
+        window.location.href = "portfolio.html";
+    } else {
+        document.getElementById("message").innerText = data.message;
+    }
+
+    }
+</script>
+
+</body>
+</html>
