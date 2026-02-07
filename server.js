@@ -147,6 +147,14 @@ app.post("/login", async (req, res) => {
   }
 });
 
+if (process.env.NODE_ENV !== "production") {
+  const PORT = 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+
 /* =====================
    IMPORTANT
 ===================== */
